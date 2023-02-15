@@ -1,22 +1,48 @@
 package com.github.panarik.manager;
 
+import com.github.panarik.connection.SocketService;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerManager {
 
-    public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(8088)) {
-            System.out.println("Server started!");
+    private static ServerSocket server;
 
-            while (true) {
-                Socket socket = serverSocket.accept();
-                System.out.println("New client connected!");
-                new Thread(new RequestHandler(socket)).start();
-            }
+    public static void main(String[] args) {
+        startServer();
+        handleRequests();
+    }
+
+    private static void startServer() {
+        try {
+            server = new ServerSocket(8088);
+            System.out.println("Server started!");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
+
+    private static void handleRequests() {
+        while (true) {
+            new Thread(new ClientManager(new SocketService(connect()))).start();
+        }
+    }
+
+    /**
+     * Wait until client. Create connection socket.
+     *
+     * @return socket.
+     */
+    private static Socket connect() {
+        try {
+            Socket socket = server.accept();
+            System.out.println("New client connected!");
+            return socket;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

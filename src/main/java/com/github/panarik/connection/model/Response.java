@@ -2,9 +2,11 @@ package com.github.panarik.connection.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStreamReader;
 
+/**
+ * Response data to client.
+ */
 public class Response {
 
     private final int status;
@@ -18,17 +20,16 @@ public class Response {
         this.headers = new String[]{"Content-Type: text/html; charset=utf-8"};
     }
 
-    public Response setBody(Path filePath) {
-        try (BufferedReader fileReader = Files.newBufferedReader(filePath)) {
+    public Response setBody(InputStreamReader stream) {
+        BufferedReader reader = new BufferedReader(stream);
+        try {
             StringBuilder builder = new StringBuilder();
-            while (fileReader.ready()) {
-                builder.append(fileReader.readLine());
-            }
+            while (reader.ready()) builder.append(reader.readLine());
             body = builder.toString();
+            return this;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return this;
     }
 
     public String print() {
