@@ -1,17 +1,17 @@
-package com.github.panarik.manager;
+package com.github.panarik.responceService;
 
 import com.github.panarik.connection.SocketService;
-import com.github.panarik.connection.model.Response;
 import com.github.panarik.data.FileDataProvider;
+import com.github.panarik.responceService.model.Response;
 
 /**
  * Manage client requests and responses.
  */
-public class ClientManager implements Runnable {
+public class ResponseManager implements Runnable {
 
     private final SocketService socketService;
 
-    public ClientManager(SocketService socketService) {
+    public ResponseManager(SocketService socketService) {
         this.socketService = socketService;
     }
 
@@ -24,6 +24,7 @@ public class ClientManager implements Runnable {
             socketService.getResponse().sendResponse(new Response(404)
                     .setBody(new FileDataProvider().getData("/404.html")));
         }
+        socketService.close();
         System.out.println("Client disconnected!");
     }
 

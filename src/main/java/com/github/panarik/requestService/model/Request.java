@@ -1,4 +1,4 @@
-package com.github.panarik.connection.model;
+package com.github.panarik.requestService.model;
 
 import java.util.LinkedList;
 
@@ -12,5 +12,5 @@ public class Request {
     private String code;
     private LinkedList<String> headers;
     private String body;
-    
+
 }

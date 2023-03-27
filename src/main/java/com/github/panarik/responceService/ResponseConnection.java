@@ -1,6 +1,6 @@
-package com.github.panarik.connection;
+package com.github.panarik.responceService;
 
-import com.github.panarik.connection.model.Response;
+import com.github.panarik.responceService.model.Response;
 
 import java.io.IOException;
 import java.io.PrintWriter;

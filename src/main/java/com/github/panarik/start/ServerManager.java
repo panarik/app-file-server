@@ -1,23 +1,36 @@
-package com.github.panarik.manager;
+package com.github.panarik.start;
 
+import com.github.panarik.config.ConfigFactory;
+import com.github.panarik.config.ConfigHolder;
+import com.github.panarik.config.TerminalConfig;
 import com.github.panarik.connection.SocketService;
+import com.github.panarik.responceService.ResponseManager;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Manage whole server jobs.
+ */
 public class ServerManager {
 
     private static ServerSocket server;
 
     public static void main(String[] args) {
+        configServer(args);
         startServer();
         handleRequests();
     }
 
+    private static void configServer(String[] args) {
+        TerminalConfig.getInstance().setArgs(args);
+        ConfigHolder.instance().setServerConfig(new ConfigFactory().getConfig());
+    }
+
     private static void startServer() {
         try {
-            server = new ServerSocket(8088);
+            server = new ServerSocket(ConfigHolder.instance().getConfig().getPort());
             System.out.println("Server started!");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -26,7 +39,7 @@ public class ServerManager {
 
     private static void handleRequests() {
         while (true) {
-            new Thread(new ClientManager(new SocketService(connect()))).start();
+            new Thread(new ResponseManager(new SocketService(connect()))).start();
         }
     }
 

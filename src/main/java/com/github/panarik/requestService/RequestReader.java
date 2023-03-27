@@ -1,4 +1,4 @@
-package com.github.panarik.connection;
+package com.github.panarik.requestService;
 
 import com.github.panarik.data.FileDataProvider;
 
@@ -13,16 +13,16 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Request connection from client.
+ * Reader client connections.
  */
-public class RequestConnection {
+public class RequestReader {
 
     private final BufferedReader input; // read request data
     private String firstLine;
     private String path; // requested file path.
     private List<String> parts;
 
-    public RequestConnection(Socket socket) {
+    public RequestReader(Socket socket) {
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {

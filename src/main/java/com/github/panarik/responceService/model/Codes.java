@@ -1,4 +1,4 @@
-package com.github.panarik.connection.model;
+package com.github.panarik.responceService.model;
 
 import java.util.HashMap;
 import java.util.Map;

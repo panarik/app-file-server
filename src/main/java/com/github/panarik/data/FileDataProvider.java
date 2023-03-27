@@ -1,5 +1,7 @@
 package com.github.panarik.data;
 
+import com.github.panarik.config.ConfigHolder;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
@@ -8,7 +10,11 @@ import java.nio.file.Path;
 
 public class FileDataProvider implements DataProvider {
 
-    public final String ROOT = "www";
+    public final String ROOT;
+
+    public FileDataProvider() {
+        this.ROOT = ConfigHolder.instance().getConfig().getPath();
+    }
 
     /**
      * Get data from file source.
