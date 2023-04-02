@@ -9,15 +9,25 @@ import java.io.InputStreamReader;
  */
 public class Response {
 
-    private final int status;
-    private final String firstLine;
+    private int status;
+    private String firstLine;
     private String[] headers;
     private String body;
 
-    public Response(int status) {
-        this.status = status;
-        this.firstLine = "HTTP/1.1 " + status + " " + new Codes().get(status);
-        this.headers = new String[]{"Content-Type: text/html; charset=utf-8"};
+    public int getStatus() {
+        return status;
+    }
+
+    public String getFirstLine() {
+        return firstLine;
+    }
+
+    public String[] getHeaders() {
+        return headers;
+    }
+
+    public String getBody() {
+        return body;
     }
 
     public Response setBody(InputStreamReader stream) {
@@ -32,13 +42,19 @@ public class Response {
         }
     }
 
-    public String print() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(firstLine).append('\n');
-        for (String line : headers) builder.append(line).append('\n');
-        builder.append('\n');
-        builder.append(body);
-        return builder.toString();
+    public Response setStatus(int status) {
+        this.status = status;
+        return this;
+    }
+
+    public Response setFirstLine() {
+        this.firstLine = "HTTP/1.1 " + status + " " + new Codes().get(status);
+        return this;
+    }
+
+    public Response setHeaders(String[] headers) {
+        this.headers = headers;
+        return this;
     }
 
 }

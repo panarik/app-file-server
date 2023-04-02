@@ -8,7 +8,6 @@ import com.github.panarik.responceService.ResponseManager;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 
 /**
  * Manage whole server jobs.
@@ -25,7 +24,7 @@ public class ServerManager {
 
     private static void configServer(String[] args) {
         TerminalConfig.getInstance().setArgs(args);
-        ConfigHolder.instance().setServerConfig(new ConfigFactory().getConfig());
+        ConfigHolder.instance().setServerConfig(ConfigFactory.getConfig());
     }
 
     private static void startServer() {
@@ -39,7 +38,7 @@ public class ServerManager {
 
     private static void handleRequests() {
         while (true) {
-            new Thread(new ResponseManager(new SocketService(connect()))).start();
+            new Thread(new ResponseManager(connect())).start();
         }
     }
 
@@ -48,11 +47,11 @@ public class ServerManager {
      *
      * @return socket.
      */
-    private static Socket connect() {
+    private static SocketService connect() {
         try {
-            Socket socket = server.accept();
+            SocketService socketService = new SocketService(server.accept());
             System.out.println("New client connected!");
-            return socket;
+            return socketService;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FileDataProvider implements DataProvider {
 
@@ -45,7 +46,8 @@ public class FileDataProvider implements DataProvider {
      * @return
      */
     public boolean fileIsExist(Path path) {
-        return Files.exists(path);
+        Path filePath = Paths.get(ROOT, path.toString());
+        return Files.exists(filePath);
     }
 
 

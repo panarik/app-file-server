@@ -1,8 +1,8 @@
 package com.github.panarik.config;
 
-public class ConfigFactory {
+public final class ConfigFactory {
 
-    public Config getConfig() {
+    public static Config getConfig() {
         if (TerminalConfig.getInstance().getPath() != null) {
             return TerminalConfig.getInstance();
         } else return new PropertyConfig();

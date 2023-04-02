@@ -1,14 +1,13 @@
 package com.github.panarik.requestService;
 
-import com.github.panarik.data.FileDataProvider;
+import com.github.panarik.requestService.model.Request;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,7 +18,6 @@ public class RequestReader {
 
     private final BufferedReader input; // read request data
     private String firstLine;
-    private String path; // requested file path.
     private List<String> parts;
 
     public RequestReader(Socket socket) {
@@ -28,59 +26,40 @@ public class RequestReader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        waitRequest();
-        readRequest();
-        printRequest();
-    }
-
-    /**
-     * Get full server path of requested file.
-     *
-     * @return requested file path.
-     */
-    public Path getPath() {
-        return Paths.get(new FileDataProvider().ROOT, path);
-    }
-
-    /**
-     * Verify request is valid or not.
-     *
-     * @return {@link true} file exist, {@link false} file not exist.
-     */
-    public boolean isValidRequest() {
-        return new FileDataProvider().fileIsExist(this.getPath());
     }
 
     /**
      * Wait until current connection has some data.
      */
-    private boolean waitRequest() {
+    private void waitRequest() {
         try {
             while (!input.ready()) ;
-            return true;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void readRequest() {
-        try {
-            firstLine = input.readLine();
-            parts = Arrays.asList(firstLine.split(" "));
-            path = parts.get(1);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void printRequest() {
+    public Request readRequest() {
+        waitRequest();
+        Request request = new Request();
+        List<String> lines = new ArrayList<>();
         try {
             while (input.ready()) {
-                System.out.println(input.readLine());
+                lines.add(input.readLine());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        request.setLines(lines);
+
+        firstLine = request.getLines().get(0);
+        parts = Arrays.asList(firstLine.split(" "));
+        request.setType(parts.get(0));
+        request.setPath(parts.get(1));
+        request.setProtocol(parts.get(2));
+        request.setHost(request.getLines().get(1));
+
+        return request;
     }
 
 }
