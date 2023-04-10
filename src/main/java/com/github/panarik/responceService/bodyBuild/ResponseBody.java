@@ -1,13 +1,13 @@
-package com.github.panarik.responceService.model;
+package com.github.panarik.responceService.bodyBuild;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Response data to client.
+ * ResponseBody data to client.
  */
-public class Response {
+public class ResponseBody {
 
     private int status;
     private String firstLine;
@@ -30,7 +30,7 @@ public class Response {
         return body;
     }
 
-    public Response setBody(InputStreamReader stream) {
+    public ResponseBody setBody(InputStreamReader stream) {
         BufferedReader reader = new BufferedReader(stream);
         try {
             StringBuilder builder = new StringBuilder();
@@ -42,17 +42,17 @@ public class Response {
         }
     }
 
-    public Response setStatus(int status) {
+    public ResponseBody setStatus(int status) {
         this.status = status;
         return this;
     }
 
-    public Response setFirstLine() {
+    public ResponseBody setFirstLine() {
         this.firstLine = "HTTP/1.1 " + status + " " + new Codes().get(status);
         return this;
     }
 
-    public Response setHeaders(String[] headers) {
+    public ResponseBody setHeaders(String[] headers) {
         this.headers = headers;
         return this;
     }

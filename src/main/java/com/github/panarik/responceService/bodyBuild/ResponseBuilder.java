@@ -1,15 +1,13 @@
-package com.github.panarik.responceService;
-
-import com.github.panarik.responceService.model.Response;
+package com.github.panarik.responceService.bodyBuild;
 
 import java.io.InputStreamReader;
 
 /**
- * Build new response.
+ * Build new response bodies.
  */
 public class ResponseBuilder {
 
-    private final Response response = new Response();
+    private final ResponseBody response = new ResponseBody();
 
     public ResponseBuilder() {
     }
@@ -26,6 +24,7 @@ public class ResponseBuilder {
     }
 
     public String build() {
+        checkResponse();
         StringBuilder builder = new StringBuilder();
         builder.append(this.response.getFirstLine()).append('\n');
         if (this.response.getHeaders() != null) {
@@ -34,5 +33,9 @@ public class ResponseBuilder {
         builder.append('\n');
         builder.append(this.response.getBody());
         return builder.toString();
+    }
+
+    private void checkResponse() {
+        if (this.response.getStatus() == 0) throw new IllegalStateException("ResponseBody must have status code.");
     }
 }

@@ -8,7 +8,7 @@ public final class ConfigHolder {
     private ConfigHolder() {
     }
 
-    public static ConfigHolder instance() {
+    public static synchronized ConfigHolder instance() {
         if (configHolder == null) {
             configHolder = new ConfigHolder();
         }

@@ -1,4 +1,4 @@
-package com.github.panarik.responceService.model;
+package com.github.panarik.responceService.bodyBuild;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -23,17 +23,9 @@ public class FileDataProvider implements DataProvider {
      * @param path path to file.
      * @return data
      */
-    public InputStreamReader getData(Path path) {
+    public InputStreamReader getData(String path) {
         try {
-            return new InputStreamReader(new FileInputStream(path.toFile()));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public InputStreamReader getData(String pathToFile) {
-        try {
-            return new InputStreamReader(new FileInputStream(ROOT + pathToFile));
+            return new InputStreamReader(new FileInputStream(ROOT + path));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
